@@ -6,7 +6,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -30,7 +29,7 @@ public class User implements Serializable {
         this.email = email;
         this.password = password;
         this.roles = new HashSet<>();
-        roles.addAll(roles);
+        this.roles.addAll(roles);
     }
 
     public String getId() {
