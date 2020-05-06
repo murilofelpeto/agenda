@@ -9,6 +9,8 @@ import java.io.Serializable;
 @Document
 public class Role implements Serializable, GrantedAuthority {
 
+    private static final long serialVersionUID = 7512843946272919989L;
+
     @Id
     private String id;
     private String roleName;
