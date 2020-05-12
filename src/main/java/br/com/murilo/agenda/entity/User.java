@@ -3,14 +3,15 @@ package br.com.murilo.agenda.entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Document
-public class User implements Serializable {
+public class User implements Serializable, UserDetails {
 
     private static final long serialVersionUID = -9153507237957973880L;
 
@@ -19,17 +20,37 @@ public class User implements Serializable {
     private String name;
     private String email;
     private String password;
+    private Boolean accountNonExpired;
+    private Boolean accountNonLocked;
+    private Boolean credentialsNonExpired;
+    private Boolean enabled;
 
     @DBRef(lazy = true)
     private Set<Role> roles;
 
-    public User(final String id, final String name, final String email, final String password, final Set<Role> roles) {
+    public List<String> getRoleName() {
+        return this.roles.stream().map(role -> role.getRoleName()).collect(Collectors.toList());
+    }
+
+    public User(final String id,
+                final String name,
+                final String email,
+                final String password,
+                final Set<Role> roles) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
+        this.accountNonExpired = false;
+        this.accountNonLocked = false;
+        this.credentialsNonExpired = false;
+        this.enabled = true;
         this.roles = new HashSet<>();
         this.roles.addAll(roles);
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
     public String getId() {
@@ -56,20 +77,40 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public void setPassword(final String password) {
         this.password = password;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public Boolean getAccountNonExpired() {
+        return accountNonExpired;
     }
 
-    public void setRoles(final Set<Role> roles) {
-        this.roles = roles;
+    public void setAccountNonExpired(final Boolean accountNonExpired) {
+        this.accountNonExpired = accountNonExpired;
+    }
+
+    public Boolean getAccountNonLocked() {
+        return accountNonLocked;
+    }
+
+    public void setAccountNonLocked(final Boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
+    }
+
+    public Boolean getCredentialsNonExpired() {
+        return credentialsNonExpired;
+    }
+
+    public void setCredentialsNonExpired(final Boolean credentialsNonExpired) {
+        this.credentialsNonExpired = credentialsNonExpired;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(final Boolean enabled) {
+        this.enabled = enabled;
     }
 
     public void addRole(Role role) {
@@ -78,6 +119,45 @@ public class User implements Serializable {
 
     public void removeRole(Role role){
         this.roles.remove(role);
+    }
+
+    public Set<Role> getAllRoles(){
+        return this.roles;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.roles;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return this.accountNonExpired;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return this.accountNonLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return this.credentialsNonExpired;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.enabled;
     }
 
     @Override

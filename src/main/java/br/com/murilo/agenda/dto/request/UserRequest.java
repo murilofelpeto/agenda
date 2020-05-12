@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class UserDTO {
+public class UserRequest {
 
     private String id;
     private String name;
@@ -12,7 +12,7 @@ public class UserDTO {
     private String password;
     private Set<RoleRequest> roles;
 
-    public UserDTO(final String id, final String name, final String email, final String password, final Set<RoleRequest> roles) {
+    public UserRequest(final String id, final String name, final String email, final String password, final Set<RoleRequest> roles) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -64,10 +64,10 @@ public class UserDTO {
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
-        if (!(o instanceof UserDTO)) return false;
-        final UserDTO userDTO = (UserDTO) o;
-        return getId().equals(userDTO.getId()) &&
-                getEmail().equals(userDTO.getEmail());
+        if (!(o instanceof UserRequest)) return false;
+        final UserRequest userRequest = (UserRequest) o;
+        return getId().equals(userRequest.getId()) &&
+                getEmail().equals(userRequest.getEmail());
     }
 
     @Override

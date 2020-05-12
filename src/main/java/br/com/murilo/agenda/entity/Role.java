@@ -20,6 +20,8 @@ public class Role implements Serializable, GrantedAuthority {
         return this.roleName;
     }
 
+    public Role(){}
+
     public Role(final String id, final String roleName) {
         this.id = id;
         this.roleName = roleName;
