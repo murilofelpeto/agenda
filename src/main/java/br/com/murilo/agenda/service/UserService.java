@@ -1,42 +1,38 @@
 package br.com.murilo.agenda.service;
 
-import br.com.murilo.agenda.entity.Role;
-import br.com.murilo.agenda.entity.User;
+import br.com.murilo.agenda.entity.ApplicationUser;
 import br.com.murilo.agenda.repository.RoleRepository;
 import br.com.murilo.agenda.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
 
-    @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private RoleRepository roleRepository;
+    public UserService(@Autowired UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-        Optional<User> userOptional = userRepository.findByEmail(username);
+        Optional<ApplicationUser> userOptional = userRepository.findByUsername(username);
         if(userOptional.isPresent()){
-            return userOptional.get();
+            ApplicationUser user = userOptional.get();
+            return new User(user.getUsername(), user.getPassword(), Collections.emptyList());
         }
         throw new UsernameNotFoundException("Username " + username + " not found!");
     }
 
-    public User createUser(final User user) {
-        Optional<Role> roleOptional = roleRepository.findByRoleName("USER");
-        if(roleOptional.isPresent()){
-            user.addRole(roleOptional.get());
+    public ApplicationUser createUser(final ApplicationUser user) {
             return userRepository.insert(user);
-        }
-        throw new RuntimeException("Role not found!");
-        //TODO Criar exception para role
     }
 }

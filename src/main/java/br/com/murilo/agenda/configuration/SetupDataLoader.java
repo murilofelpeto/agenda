@@ -12,8 +12,11 @@ import java.util.Optional;
 @Configuration
 public class SetupDataLoader implements ApplicationListener<ContextRefreshedEvent> {
 
-    @Autowired
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
+
+    public SetupDataLoader(@Autowired final RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
+    }
 
     @Override
     public void onApplicationEvent(final ContextRefreshedEvent contextRefreshedEvent) {
