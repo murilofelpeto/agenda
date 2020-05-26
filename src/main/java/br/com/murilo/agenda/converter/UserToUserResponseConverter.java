@@ -10,6 +10,6 @@ public class UserToUserResponseConverter implements Converter<ApplicationUser, U
 
     @Override
     public UserResponse convert(final ApplicationUser user) {
-        return new UserResponse(user.getId(), user.getUsername());
+        return new UserResponse(user.getId(), user.getName(), user.getUsername());
     }
 }

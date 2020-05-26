@@ -14,22 +14,34 @@ import java.util.stream.Collectors;
 @Document
 public class ApplicationUser {
 
-    private static final long serialVersionUID = -9153507237957973880L;
-
     @Id
     private String id;
+    private String name;
     private String username;
     private String password;
 
     public ApplicationUser(){}
 
-    public ApplicationUser(final String id, final String username, final String password) {
+    public ApplicationUser(final String id,
+                           final String username,
+                           final String password) {
         this.id = id;
         this.username = username;
         this.password = password;
     }
 
-    public ApplicationUser(final String username, final String password) {
+    public ApplicationUser(final String username,
+                           final String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public ApplicationUser(final String id,
+                           final String name,
+                           final String username,
+                           final String password) {
+        this.id = id;
+        this.name = name;
         this.username = username;
         this.password = password;
     }
@@ -56,5 +68,27 @@ public class ApplicationUser {
 
     public void setPassword(final String password) {
         this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ApplicationUser)) return false;
+        final ApplicationUser user = (ApplicationUser) o;
+        return getId().equals(user.getId()) &&
+                getUsername().equals(user.getUsername());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getUsername());
     }
 }

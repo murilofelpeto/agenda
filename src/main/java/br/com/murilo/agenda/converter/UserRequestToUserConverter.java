@@ -14,6 +14,7 @@ public class UserRequestToUserConverter implements Converter<UserRequest, Applic
         user.setId(userRequest.getId());
         user.setPassword(userRequest.getPassword());
         user.setUsername(userRequest.getEmail());
+        user.setName(userRequest.getName());
         return user;
     }
 }

@@ -3,11 +3,16 @@ package br.com.murilo.agenda.dto.request;
 public class UserRequest {
 
     private String id;
+    private String name;
     private String email;
     private String password;
 
-    public UserRequest(final String id, final String email, final String password) {
+    public UserRequest(final String id,
+                       final String name,
+                       final String email,
+                       final String password) {
         this.id = id;
+        this.name = name;
         this.email = email;
         this.password = password;
     }
@@ -18,6 +23,14 @@ public class UserRequest {
 
     public void setId(final String id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
     }
 
     public String getEmail() {
