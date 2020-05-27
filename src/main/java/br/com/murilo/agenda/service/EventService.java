@@ -20,10 +20,10 @@ public class EventService {
     public List<Event> findEventsByDateBetween(final LocalDateTime startDate,
                                                final LocalDateTime endDate,
                                                final String userID) {
-        return eventRepository.findEventsBetweenStartDateAndEndDate(startDate, endDate, userID);
+        return eventRepository.findByInitialDateTimeBetweenAndOrganizerId(startDate, endDate, userID);
     }
 
     public Event createEvent(Event event) {
-        return eventRepository.insert(event);
+        return eventRepository.save(event);
     }
 }

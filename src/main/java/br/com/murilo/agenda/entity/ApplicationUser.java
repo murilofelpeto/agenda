@@ -1,17 +1,11 @@
 package br.com.murilo.agenda.entity;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
-@Document
+@Document(collection = "users")
 public class ApplicationUser {
 
     @Id

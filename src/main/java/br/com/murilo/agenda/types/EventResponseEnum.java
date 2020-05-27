@@ -1,5 +1,6 @@
 package br.com.murilo.agenda.types;
 
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashMap;
@@ -8,7 +9,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Document
+@Document(collection = "users")
+@TypeAlias("EventResponse")
 public enum EventResponseEnum {
 
     YES("Yes"),

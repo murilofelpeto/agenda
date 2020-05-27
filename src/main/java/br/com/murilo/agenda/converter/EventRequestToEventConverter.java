@@ -40,11 +40,12 @@ public class EventRequestToEventConverter implements Converter<EventRequest, Eve
                 .map(guestUser -> new Guest(guestUser.getId(), guestUser.getName(), guestUser.getUsername(), MAYBE))
                 .collect(Collectors.toList());
 
-        return new Event(eventRequest.getId(),
+        final Event event = new Event(eventRequest.getId(),
                 eventRequest.getInitialDateTime(),
                 eventRequest.getFinalDateTime(),
                 eventRequest.getEventColor(),
                 organizer,
                 guests);
+        return event;
     }
 }

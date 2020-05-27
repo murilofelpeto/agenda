@@ -17,4 +17,6 @@ public interface EventRepository extends MongoRepository<Event, String> {
     List<Event> findEventsBetweenStartDateAndEndDate(@Param("startDate") LocalDateTime startDate,
                                                      @Param("endDate")LocalDateTime endDate,
                                                      @Param("id")String id);
+
+    List<Event> findByInitialDateTimeBetweenAndOrganizerId(LocalDateTime initialDateTime, LocalDateTime endDateTime, String userID);
 }

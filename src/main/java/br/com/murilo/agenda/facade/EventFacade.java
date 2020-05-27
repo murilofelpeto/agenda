@@ -9,21 +9,37 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class EventFacade {
 
     private EventService eventService;
     private ConversionService conversionService;
+    private UserService userService;
 
     public EventFacade(@Autowired EventService eventService,
-                      @Autowired ConversionService conversionService) {
+                       @Autowired ConversionService conversionService,
+                       @Autowired UserService userService) {
         this.eventService = eventService;
         this.conversionService = conversionService;
+        this.userService = userService;
     }
 
     public EventResponse createEvent(EventRequest eventRequest){
         Event event = conversionService.convert(eventRequest, Event.class);
         event = eventService.createEvent(event);
         return conversionService.convert(event, EventResponse.class);
+    }
+
+    public List<EventResponse> findEventsBetweenDates(final LocalDateTime initialDate, final LocalDateTime endDate, String username) {
+        String userId = userService.findByUsername(username).getId();
+        List<Event> events = eventService.findEventsByDateBetween(initialDate, endDate, userId);
+        return events.stream()
+                .map(event -> conversionService.convert(event,EventResponse.class))
+                .collect(Collectors.toList());
     }
 }

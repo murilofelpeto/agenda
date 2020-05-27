@@ -26,4 +26,6 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addConverter(new EventRequestToEventConverter(userService));
         registry.addConverter(new EventToEventResponseConverter());
     }
+
+
 }
