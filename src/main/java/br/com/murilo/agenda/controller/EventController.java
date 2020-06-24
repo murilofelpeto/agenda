@@ -30,7 +30,7 @@ public class EventController {
 
     @PostMapping
     public EventResponse createEvent(@RequestBody EventRequest request) {
-        //TODO retrieve organizer email by Authorization
+        request.setOrganizerEmail(getUsername());
         return eventFacade.createEvent(request);
     }
 

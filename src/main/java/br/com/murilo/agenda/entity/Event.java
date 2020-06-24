@@ -1,14 +1,13 @@
 package br.com.murilo.agenda.entity;
 
+import br.com.murilo.agenda.types.EventResponseEnum;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Document
 public class Event {
@@ -23,24 +22,29 @@ public class Event {
     private LocalDateTime finalDateTime;
     private String eventColor;
 
-    @DBRef
-    private Organizer organizer;
 
     @DBRef
-    private List<Guest> guests;
+    private EventUser organizer;
+
+    @DBRef
+    private Set<EventUser> guests;
+
+    public Event(){
+        this.guests = new HashSet<>();
+    }
 
     public Event(final String id,
                  final LocalDateTime initialDateTime,
                  final LocalDateTime finalDateTime,
                  final String eventColor,
-                 final Organizer organizer,
-                 final List<Guest> guests) {
+                 final EventUser organizer,
+                 final Set<EventUser> guests) {
         this.id = id;
         this.initialDateTime = initialDateTime;
         this.finalDateTime = finalDateTime;
         this.eventColor = eventColor;
         this.organizer = organizer;
-        this.guests = new ArrayList<>();
+        this.guests = new HashSet<>();
         this.guests.addAll(guests);
     }
 
@@ -76,37 +80,36 @@ public class Event {
         this.eventColor = eventColor;
     }
 
-    public Organizer getOrganizer() {
+    public EventUser getOrganizer() {
         return organizer;
     }
 
-    public void setOrganizer(final Organizer organizer) {
+    public void setOrganizer(final EventUser organizer) {
         this.organizer = organizer;
     }
 
-    public String getOrganizerEmail() {
-        return this.organizer.getUsername();
-    }
-
-    public List<Guest> getGuests() {
+    public Set<EventUser> getGuests() {
         return guests;
     }
 
-    public void setGuests(final List<Guest> guests) {
-        this.guests = guests;
-    }
-
-    public List<String> getGuestsEmail() {
-        return this.guests.stream()
-                .map(Guest::getUsername)
-                .collect(Collectors.toList());
-    }
-
-    public void addGuest(Guest guest) {
+    public void addGuest(EventUser guest) {
         this.guests.add(guest);
     }
 
-    public void removeGuest(Guest guest) {
-        this.guests.remove(guest);
+    public void setGuests(final Set<EventUser> guests) {
+        this.guests = guests;
     }
+
+    public void updateGuest(EventUser guest) {
+        if(this.guests.contains(guest)) {
+            this.guests.remove(guest);
+            this.guests.add(guest);
+        }
+    }
+
+    public void removeGuest(EventUser guest) {
+        this.guests.removeIf(g -> g.equals(guest));
+    }
+
+
 }
