@@ -9,7 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 
-@Document
+@Document(collection = "event")
 public class Event {
 
     @Id
@@ -24,12 +24,13 @@ public class Event {
 
 
     @DBRef
-    private EventUser organizer;
+    private Map<EventResponseEnum, ApplicationUser> organizer;
 
     @DBRef
     private Set<EventUser> guests;
 
     public Event(){
+        this.organizer = new HashMap<>();
         this.guests = new HashSet<>();
     }
 
@@ -37,13 +38,16 @@ public class Event {
                  final LocalDateTime initialDateTime,
                  final LocalDateTime finalDateTime,
                  final String eventColor,
-                 final EventUser organizer,
+                 final Map<EventResponseEnum, ApplicationUser> organizer,
                  final Set<EventUser> guests) {
         this.id = id;
         this.initialDateTime = initialDateTime;
         this.finalDateTime = finalDateTime;
         this.eventColor = eventColor;
-        this.organizer = organizer;
+
+        this.organizer = new HashMap<>();
+        this.organizer.putAll(organizer);
+
         this.guests = new HashSet<>();
         this.guests.addAll(guests);
     }
@@ -80,12 +84,19 @@ public class Event {
         this.eventColor = eventColor;
     }
 
-    public EventUser getOrganizer() {
+    public Map<EventResponseEnum, ApplicationUser> getOrganizer() {
         return organizer;
     }
 
-    public void setOrganizer(final EventUser organizer) {
-        this.organizer = organizer;
+    public void addOrganizer(EventResponseEnum response, ApplicationUser organizer) {
+        if(this.organizer.size() < 1) {
+            this.organizer.put(response, organizer);
+        }
+    }
+
+    public void updateOrganizer(EventResponseEnum response, ApplicationUser organizer) {
+        this.organizer.values().forEach(o -> this.organizer.remove(o));
+        addOrganizer(response, organizer);
     }
 
     public Set<EventUser> getGuests() {

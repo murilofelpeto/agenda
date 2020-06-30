@@ -24,10 +24,7 @@ public class EventRequestToEventConverter implements Converter<EventRequest, Eve
 
     @Override
     public Event convert(final EventRequest eventRequest) {
-
         var organizer = userService.findByUsername(eventRequest.getOrganizerEmail());
-        EventUser eventOrganizer = new EventUser(YES, organizer);
-
 
         List<ApplicationUser> guests = userService.findUsersByUsername(eventRequest.getGuestsEmail());
         Set<EventUser> eventGuests = guests.stream()
@@ -40,7 +37,7 @@ public class EventRequestToEventConverter implements Converter<EventRequest, Eve
                 eventRequest.getInitialDateTime(),
                 eventRequest.getFinalDateTime(),
                 eventRequest.getEventColor(),
-                eventOrganizer,
+                Map.of(YES, organizer),
                 eventGuests);
         return event;
     }

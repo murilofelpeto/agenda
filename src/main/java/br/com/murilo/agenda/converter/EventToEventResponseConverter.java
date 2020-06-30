@@ -1,6 +1,7 @@
 package br.com.murilo.agenda.converter;
 
 import br.com.murilo.agenda.dto.response.EventResponse;
+import br.com.murilo.agenda.dto.response.Response;
 import br.com.murilo.agenda.entity.Event;
 import br.com.murilo.agenda.entity.EventUser;
 import br.com.murilo.agenda.types.EventResponseEnum;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.*;
 
@@ -27,15 +29,15 @@ public class EventToEventResponseConverter implements Converter<Event, EventResp
                 getGuestsResponse(event));
     }
 
-    private Map<EventResponseEnum, String> getOrganizerResponse(final Event event){
+    private Response getOrganizerResponse(final Event event){
         final var organizer = event.getOrganizer();
-        Map<EventResponseEnum, String> organizerResponse = new HashMap<>();
-        organizerResponse.put(organizer.getResponse(), organizer.getUsername());
-        return organizerResponse;
+        final var response = organizer.entrySet().stream().map(Map.Entry::getKey).findFirst().get();
+        final var organizerEmail = organizer.values().stream().findFirst().get().getUsername();
+        return new Response(response, organizerEmail);
     }
 
-    private Map<EventResponseEnum, List<String>> getGuestsResponse(final Event event) {
+    private List<Response> getGuestsResponse(final Event event) {
         final var guests = event.getGuests();
-        return guests.stream().collect(groupingBy(EventUser::getResponse, mapping(EventUser::getUsername, toList())));
+        return guests.stream().map(guest -> new Response(guest.getResponse(), guest.getUsername())).collect(Collectors.toList());
     }
 }

@@ -36,14 +36,13 @@ public class EventFacade {
 
     public EventResponse createEvent(EventRequest eventRequest){
         Event event = conversionService.convert(eventRequest, Event.class);
-        event.setOrganizer(eventUserService.save(event.getOrganizer()));
         event.setGuests(eventUserService.saveAll(event.getGuests()));
         event = eventService.createEvent(event);
         return conversionService.convert(event, EventResponse.class);
     }
 
     public List<EventResponse> findEventsBetweenDates(final LocalDateTime initialDate, final LocalDateTime endDate, String username) {
-        String userId = userService.findByUsername(username).getId();
+        final var userId = userService.findByUsername(username).getId();
         List<Event> events = eventService.findEventsByDateBetween(initialDate, endDate, userId);
         return events.stream()
                 .map(event -> conversionService.convert(event,EventResponse.class))

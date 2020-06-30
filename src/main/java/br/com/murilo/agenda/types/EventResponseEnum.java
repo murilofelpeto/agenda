@@ -1,5 +1,6 @@
 package br.com.murilo.agenda.types;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashMap;
@@ -8,7 +9,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Document(collection = "eventUser")
+@Document(collection = "event")
 public enum EventResponseEnum {
 
     YES("Yes"),

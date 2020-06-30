@@ -14,6 +14,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import static br.com.murilo.agenda.types.EventResponseEnum.YES;
+
 @Service
 public class EventService {
 
@@ -26,16 +28,7 @@ public class EventService {
     public List<Event> findEventsByDateBetween(final LocalDateTime startDate,
                                                final LocalDateTime endDate,
                                                final String userID) {
-        Event event = new Event();
-        ApplicationUser user = new ApplicationUser();
-        user.setId(userID);
-        EventUser organizer = new EventUser();
-        organizer.setUser(user);
-        event.setOrganizer(organizer);
-
-        ExampleMatcher matcher = ExampleMatcher.matchingAny().withIgnoreNullValues();
-        Example<Event> example = Example.of(event, matcher);
-        return eventRepository.findAll(example);
+        return eventRepository.findByOrganizer(YES, userID);
     }
 
     public Event createEvent(Event event) {

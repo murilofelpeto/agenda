@@ -1,5 +1,6 @@
 package br.com.murilo.agenda.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
@@ -24,13 +25,11 @@ public class EventRequest {
                          final LocalDateTime initialDateTime,
                          final LocalDateTime finalDateTime,
                          final String eventColor,
-                         final String organizerEmail,
                          final List<String> guestsEmail) {
         this.id = id;
         this.initialDateTime = initialDateTime;
         this.finalDateTime = finalDateTime;
         this.eventColor = eventColor;
-        this.organizerEmail = organizerEmail;
         this.guestsEmail = new ArrayList<>();
         this.guestsEmail.addAll(guestsEmail);
     }
