@@ -40,4 +40,14 @@ public enum EventResponseEnum {
     public static Map<String, EventResponseEnum> getByResponse() {
         return byResponse;
     }
+
+    public static EventResponseEnum fromString(String response) {
+        for (EventResponseEnum item : values()) {
+            if(item.getResponse().equalsIgnoreCase(response)) {
+                return item;
+            }
+        }
+        return null;
+
+    }
 }

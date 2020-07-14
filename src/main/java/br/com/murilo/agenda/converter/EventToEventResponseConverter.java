@@ -31,9 +31,9 @@ public class EventToEventResponseConverter implements Converter<Event, EventResp
 
     private Response getOrganizerResponse(final Event event){
         final var organizer = event.getOrganizer();
-        final var response = organizer.entrySet().stream().map(Map.Entry::getKey).findFirst().get();
+        Object response = organizer.entrySet().stream().map(Map.Entry::getKey).findFirst().get();
         final var organizerEmail = organizer.values().stream().findFirst().get().getUsername();
-        return new Response(response, organizerEmail);
+        return new Response(EventResponseEnum.fromString(response.toString()), organizerEmail);
     }
 
     private List<Response> getGuestsResponse(final Event event) {
