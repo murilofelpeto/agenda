@@ -3,7 +3,6 @@ package br.com.murilo.agenda.controller;
 import br.com.murilo.agenda.dto.request.UserRequest;
 import br.com.murilo.agenda.dto.response.UserResponse;
 import br.com.murilo.agenda.facade.UserFacade;
-import br.com.murilo.agenda.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

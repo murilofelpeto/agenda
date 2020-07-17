@@ -1,6 +1,6 @@
 package br.com.murilo.agenda.controller;
 
-import br.com.murilo.agenda.dto.request.EventRequest;
+import br.com.murilo.agenda.dto.request.EventCreationRequest;
 import br.com.murilo.agenda.dto.response.EventResponse;
 import br.com.murilo.agenda.facade.EventFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,15 +21,15 @@ public class EventController {
         this.eventFacade = eventFacade;
     }
 
-    @GetMapping
+    /*@GetMapping
     public List<EventResponse> findEventsBetweenDates(@RequestParam("initialDate") @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")LocalDateTime initialDate,
                                                       @RequestParam("endDate") @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")LocalDateTime endDate){
         String username = getUsername();
         return eventFacade.findEventsBetweenDates(initialDate, endDate, username);
-    }
+    }*/
 
     @PostMapping
-    public EventResponse createEvent(@RequestBody EventRequest request) {
+    public EventResponse createEvent(@RequestBody EventCreationRequest request) {
         request.setOrganizerEmail(getUsername());
         return eventFacade.createEvent(request);
     }

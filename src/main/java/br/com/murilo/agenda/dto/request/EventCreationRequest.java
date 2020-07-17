@@ -1,38 +1,37 @@
 package br.com.murilo.agenda.dto.request;
 
-import br.com.murilo.agenda.dto.response.UserEventResponse;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventRequest {
+public class EventCreationRequest {
 
     private String id;
-
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime initialDateTime;
 
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime finalDateTime;
     private String eventColor;
-    private UserEventResponse organizer;
-    private List<UserEventResponse> guests;
+    private String organizerEmail;
+    private List<String> guestsEmail;
 
-    public EventRequest(final String id,
-                        final LocalDateTime initialDateTime,
-                        final LocalDateTime finalDateTime,
-                        final String eventColor,
-                        final UserEventResponse organizer,
-                        final List<UserEventResponse> guests) {
+    public EventCreationRequest(){}
+
+    public EventCreationRequest(final String id,
+                                final LocalDateTime initialDateTime,
+                                final LocalDateTime finalDateTime,
+                                final String eventColor,
+                                final List<String> guestsEmail) {
         this.id = id;
         this.initialDateTime = initialDateTime;
         this.finalDateTime = finalDateTime;
         this.eventColor = eventColor;
-        this.organizer = organizer;
-        this.guests = new ArrayList<>();
-        this.guests.addAll(guests);
+        this.guestsEmail = new ArrayList<>();
+        this.guestsEmail.addAll(guestsEmail);
     }
 
     public String getId() {
@@ -67,19 +66,19 @@ public class EventRequest {
         this.eventColor = eventColor;
     }
 
-    public UserEventResponse getOrganizer() {
-        return organizer;
+    public String getOrganizerEmail() {
+        return organizerEmail;
     }
 
-    public void setOrganizer(final UserEventResponse organizer) {
-        this.organizer = organizer;
+    public void setOrganizerEmail(final String organizerEmail) {
+        this.organizerEmail = organizerEmail;
     }
 
-    public List<UserEventResponse> getGuests() {
-        return guests;
+    public List<String> getGuestsEmail() {
+        return guestsEmail;
     }
 
-    public void setGuests(final List<UserEventResponse> guests) {
-        this.guests = guests;
+    public void setGuestsEmail(final List<String> guestsEmail) {
+        this.guestsEmail = guestsEmail;
     }
 }

@@ -2,7 +2,6 @@ package br.com.murilo.agenda.service;
 
 import br.com.murilo.agenda.entity.ApplicationUser;
 import br.com.murilo.agenda.repository.ApplicationUserRepository;
-import br.com.murilo.agenda.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

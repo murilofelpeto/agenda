@@ -24,32 +24,35 @@ public class Event {
 
 
     @DBRef
-    private Map<EventResponseEnum, ApplicationUser> organizer;
+    private Map<ApplicationUser, EventResponseEnum> organizer;
 
     @DBRef
-    private Set<EventUser> guests;
+    private Map<ApplicationUser, EventResponseEnum> guests;
 
     public Event(){
         this.organizer = new HashMap<>();
-        this.guests = new HashSet<>();
+        this.guests = new HashMap<>();
     }
 
     public Event(final String id,
                  final LocalDateTime initialDateTime,
                  final LocalDateTime finalDateTime,
                  final String eventColor,
-                 final Map<EventResponseEnum, ApplicationUser> organizer,
-                 final Set<EventUser> guests) {
+                 final Map<ApplicationUser, EventResponseEnum> organizer,
+                 final Map<ApplicationUser, EventResponseEnum> guests) {
+
+        this.organizer = new HashMap<>();
+        this.guests = new HashMap<>();
+
         this.id = id;
         this.initialDateTime = initialDateTime;
         this.finalDateTime = finalDateTime;
         this.eventColor = eventColor;
 
-        this.organizer = new HashMap<>();
-        this.organizer.putAll(organizer);
-
-        this.guests = new HashSet<>();
-        this.guests.addAll(guests);
+        if(organizer.size() == 1) {
+            this.organizer.putAll(organizer);
+        }
+        this.guests.putAll(guests);
     }
 
     public String getId() {
@@ -84,43 +87,35 @@ public class Event {
         this.eventColor = eventColor;
     }
 
-    public Map<EventResponseEnum, ApplicationUser> getOrganizer() {
+    public Map<ApplicationUser, EventResponseEnum> getOrganizer() {
         return organizer;
     }
 
-    public void addOrganizer(EventResponseEnum response, ApplicationUser organizer) {
-        if(this.organizer.size() < 1) {
-            this.organizer.put(response, organizer);
+    public void addOrganizer(final ApplicationUser organizer, final EventResponseEnum response) {
+        if(this.organizer.isEmpty()) {
+            this.organizer.put(organizer, response);
         }
+        //TODO Criar exception
+        throw new RuntimeException("Só pode ter um organizador neste evento");
     }
 
-    public void updateOrganizer(EventResponseEnum response, ApplicationUser organizer) {
-        this.organizer.values().forEach(o -> this.organizer.remove(o));
-        addOrganizer(response, organizer);
+    public void updateOrganizerResponse(final ApplicationUser organizer, final EventResponseEnum response) {
+        this.organizer.replace(organizer, response);
     }
 
-    public Set<EventUser> getGuests() {
+    public Map<ApplicationUser, EventResponseEnum> getGuests() {
         return guests;
     }
 
-    public void addGuest(EventUser guest) {
-        this.guests.add(guest);
+    public void addGuests(final ApplicationUser guest, EventResponseEnum response) {
+        this.guests.put(guest, response);
     }
 
-    public void setGuests(final Set<EventUser> guests) {
-        this.guests = guests;
+    public void deleteGuests(final ApplicationUser guest) {
+        this.guests.remove(guest);
     }
 
-    public void updateGuest(EventUser guest) {
-        if(this.guests.contains(guest)) {
-            this.guests.remove(guest);
-            this.guests.add(guest);
-        }
+    public void updateGuestResponse(final ApplicationUser guest, EventResponseEnum response) {
+        this.guests.replace(guest, response);
     }
-
-    public void removeGuest(EventUser guest) {
-        this.guests.removeIf(g -> g.equals(guest));
-    }
-
-
 }

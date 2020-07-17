@@ -1,6 +1,7 @@
 package br.com.murilo.agenda.entity;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Objects;
@@ -15,30 +16,6 @@ public class ApplicationUser {
     private String password;
 
     public ApplicationUser(){}
-
-    public ApplicationUser(final String id,
-                           final String username,
-                           final String password) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-    }
-
-    public ApplicationUser(final String username,
-                           final String password) {
-        this.username = username;
-        this.password = password;
-    }
-
-    public ApplicationUser(final String id,
-                           final String name,
-                           final String username,
-                           final String password) {
-        this.id = id;
-        this.name = name;
-        this.username = username;
-        this.password = password;
-    }
 
     public String getId() {
         return id;
@@ -77,12 +54,11 @@ public class ApplicationUser {
         if (this == o) return true;
         if (!(o instanceof ApplicationUser)) return false;
         final ApplicationUser user = (ApplicationUser) o;
-        return getId().equals(user.getId()) &&
-                getUsername().equals(user.getUsername());
+        return getId().equals(user.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getUsername());
+        return Objects.hash(getId());
     }
 }
