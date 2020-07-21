@@ -34,6 +34,13 @@ public class EventController {
         return eventFacade.createEvent(request);
     }
 
+    @GetMapping
+    public List<EventResponse> findEvents(@RequestParam("initialDate") @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")LocalDateTime initialDate,
+                                          @RequestParam("endDate") @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")LocalDateTime endDate) {
+        final String username = getUsername();
+        return this.eventFacade.findEvents(username, initialDate, endDate);
+    }
+
     private String getUsername(){
         return SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
     }

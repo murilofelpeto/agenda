@@ -25,8 +25,8 @@ public class WebConfig implements WebMvcConfigurer {
     public void addFormatters(final FormatterRegistry registry) {
         registry.addConverter(new EventCreationRequestToEventConverter(userService));
         registry.addConverter(new EventRequestToEventConverter(conversionService));
-        registry.addConverter(new EventToEventResponseConverter());
-        registry.addConverter(new UserEventResponseToMapConverter(userService));
+        registry.addConverter(new EventToEventResponseConverter(userService));
+        registry.addConverter(new UserEventResponseToEventUserResponseConverter(userService));
         registry.addConverter(new UserRequestToUserConverter());
         registry.addConverter(new UserToUserResponseConverter());
     }

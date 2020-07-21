@@ -2,7 +2,6 @@ package br.com.murilo.agenda.entity;
 
 import br.com.murilo.agenda.types.EventResponseEnum;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -21,38 +20,21 @@ public class Event {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime finalDateTime;
     private String eventColor;
-
-
-    @DBRef
-    private Map<ApplicationUser, EventResponseEnum> organizer;
-
-    @DBRef
-    private Map<ApplicationUser, EventResponseEnum> guests;
-
-    public Event(){
-        this.organizer = new HashMap<>();
-        this.guests = new HashMap<>();
-    }
+    private EventUserResponse organizer;
+    private List<EventUserResponse> guests;
 
     public Event(final String id,
                  final LocalDateTime initialDateTime,
                  final LocalDateTime finalDateTime,
                  final String eventColor,
-                 final Map<ApplicationUser, EventResponseEnum> organizer,
-                 final Map<ApplicationUser, EventResponseEnum> guests) {
-
-        this.organizer = new HashMap<>();
-        this.guests = new HashMap<>();
-
+                 final EventUserResponse organizer,
+                 final List<EventUserResponse> guests) {
         this.id = id;
         this.initialDateTime = initialDateTime;
         this.finalDateTime = finalDateTime;
         this.eventColor = eventColor;
-
-        if(organizer.size() == 1) {
-            this.organizer.putAll(organizer);
-        }
-        this.guests.putAll(guests);
+        this.organizer = organizer;
+        this.guests = guests;
     }
 
     public String getId() {
@@ -87,35 +69,40 @@ public class Event {
         this.eventColor = eventColor;
     }
 
-    public Map<ApplicationUser, EventResponseEnum> getOrganizer() {
+    public EventUserResponse getOrganizer() {
         return organizer;
     }
 
-    public void addOrganizer(final ApplicationUser organizer, final EventResponseEnum response) {
-        if(this.organizer.isEmpty()) {
-            this.organizer.put(organizer, response);
-        }
-        //TODO Criar exception
-        throw new RuntimeException("Só pode ter um organizador neste evento");
+    public void setOrganizer(final EventUserResponse organizer) {
+        this.organizer = organizer;
     }
 
-    public void updateOrganizerResponse(final ApplicationUser organizer, final EventResponseEnum response) {
-        this.organizer.replace(organizer, response);
+    public String getOrganizerEmail() {
+        return this.organizer.getUser().getUsername();
     }
 
-    public Map<ApplicationUser, EventResponseEnum> getGuests() {
+    public EventResponseEnum getOrganizerResponse() {
+        return this.organizer.getResponse();
+    }
+
+    public List<EventUserResponse> getGuests() {
         return guests;
     }
 
-    public void addGuests(final ApplicationUser guest, EventResponseEnum response) {
-        this.guests.put(guest, response);
+    public void setGuests(final List<EventUserResponse> guests) {
+        this.guests = guests;
     }
 
-    public void deleteGuests(final ApplicationUser guest) {
-        this.guests.remove(guest);
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Event)) return false;
+        final Event event = (Event) o;
+        return getId().equals(event.getId());
     }
 
-    public void updateGuestResponse(final ApplicationUser guest, EventResponseEnum response) {
-        this.guests.replace(guest, response);
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

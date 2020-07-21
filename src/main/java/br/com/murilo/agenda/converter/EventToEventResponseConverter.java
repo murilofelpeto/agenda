@@ -1,19 +1,27 @@
 package br.com.murilo.agenda.converter;
 
 import br.com.murilo.agenda.dto.response.EventResponse;
-import br.com.murilo.agenda.dto.response.UserEventResponse;
+import br.com.murilo.agenda.dto.Response;
 import br.com.murilo.agenda.entity.Event;
+import br.com.murilo.agenda.service.UserService;
 import br.com.murilo.agenda.types.EventResponseEnum;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 
 @Service
 public class EventToEventResponseConverter implements Converter<Event, EventResponse> {
+
+    private final UserService userService;
+
+    @Autowired
+    public EventToEventResponseConverter(final UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public EventResponse convert(final Event event) {
@@ -26,19 +34,17 @@ public class EventToEventResponseConverter implements Converter<Event, EventResp
                 getGuestsResponse(event));
     }
 
-    private UserEventResponse getOrganizerResponse(final Event event){
-        final var organizer = event.getOrganizer();
-        final var response = organizer.entrySet().stream().map(Map.Entry::getValue).findFirst().get();
-        final var organizerEmail = organizer.keySet().stream().findFirst().get().getUsername();
-        return new UserEventResponse(organizerEmail, EventResponseEnum.fromString(response.toString()));
+    private Response getOrganizerResponse(final Event event){
+        final var organizerEmail = event.getOrganizerEmail();
+        return new Response(organizerEmail, EventResponseEnum.fromString(event.getOrganizerResponse().toString()));
     }
 
-    private List<UserEventResponse> getGuestsResponse(final Event event) {
+    private List<Response> getGuestsResponse(final Event event) {
         final var guests = event.getGuests();
-        return guests.entrySet()
+        return guests
                 .stream()
-                .map(guest -> new UserEventResponse(guest.getKey().getUsername(),
-                              EventResponseEnum.fromString(guest.getValue().toString())))
+                .map(guest -> new Response(guest.getUser().getUsername(),
+                              EventResponseEnum.fromString(guest.getResponse().toString())))
                 .collect(Collectors.toList());
     }
 }

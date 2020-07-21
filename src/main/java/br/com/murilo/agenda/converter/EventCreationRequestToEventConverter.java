@@ -27,20 +27,16 @@ public class EventCreationRequestToEventConverter implements Converter<EventCrea
     @Override
     public Event convert(final EventCreationRequest eventCreationRequest) {
         final var organizer = userService.findByUsername(eventCreationRequest.getOrganizerEmail());
-        List<ApplicationUser> guests = userService.findUsersByUsername(eventCreationRequest.getGuestsEmail());
+        List<ApplicationUser> users = userService.findUsersByUsername(eventCreationRequest.getGuestsEmail());
 
-
-        Map<ApplicationUser, EventResponseEnum> guestMap = new HashMap<>();
-        guests.forEach(guest ->{
-            guestMap.put(guest, MAYBE);
-        });
+        List<EventUserResponse> guests = users.stream().map(user -> new EventUserResponse(user, MAYBE)).collect(Collectors.toList());
 
         final Event event = new Event(eventCreationRequest.getId(),
                 eventCreationRequest.getInitialDateTime(),
                 eventCreationRequest.getFinalDateTime(),
                 eventCreationRequest.getEventColor(),
-                Map.of(organizer, YES),
-                guestMap);
+                new EventUserResponse(organizer, YES),
+                guests);
         return event;
     }
 }

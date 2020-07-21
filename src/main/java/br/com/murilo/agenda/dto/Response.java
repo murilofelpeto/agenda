@@ -1,13 +1,13 @@
-package br.com.murilo.agenda.dto.response;
+package br.com.murilo.agenda.dto;
 
 import br.com.murilo.agenda.types.EventResponseEnum;
 
-public class UserEventResponse {
+public class Response {
 
     private String username;
     private EventResponseEnum response;
 
-    public UserEventResponse(final String username, final EventResponseEnum response) {
+    public Response(final String username, final EventResponseEnum response) {
         this.username = username;
         this.response = response;
     }

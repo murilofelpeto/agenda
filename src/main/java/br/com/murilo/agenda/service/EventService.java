@@ -5,6 +5,9 @@ import br.com.murilo.agenda.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Service
 public class EventService {
 
@@ -20,7 +23,7 @@ public class EventService {
 
     public Event createEvent(final Event event) {
         if(event.getId() == null) {
-            this.eventRepository.insert(event);
+           return this.eventRepository.insert(event);
         }
         //TODO Criar exception
         throw new RuntimeException(EVENT_ALREADY_EXIST);
@@ -40,6 +43,10 @@ public class EventService {
             return;
         }
         throw new RuntimeException(EVENT_DOES_NOT_EXIST);
+    }
+
+    public List<Event> findEvents(String id, final LocalDateTime initialDate, final LocalDateTime endDate) {
+        return this.eventRepository.findByInitialDateTimeBetweenAndOrganizerUserId(initialDate, endDate, id);
     }
 
     private Boolean eventExist(String id) {

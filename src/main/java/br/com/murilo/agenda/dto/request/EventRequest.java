@@ -1,6 +1,6 @@
 package br.com.murilo.agenda.dto.request;
 
-import br.com.murilo.agenda.dto.response.UserEventResponse;
+import br.com.murilo.agenda.dto.Response;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
@@ -17,15 +17,15 @@ public class EventRequest {
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime finalDateTime;
     private String eventColor;
-    private UserEventResponse organizer;
-    private List<UserEventResponse> guests;
+    private Response organizer;
+    private List<Response> guests;
 
     public EventRequest(final String id,
                         final LocalDateTime initialDateTime,
                         final LocalDateTime finalDateTime,
                         final String eventColor,
-                        final UserEventResponse organizer,
-                        final List<UserEventResponse> guests) {
+                        final Response organizer,
+                        final List<Response> guests) {
         this.id = id;
         this.initialDateTime = initialDateTime;
         this.finalDateTime = finalDateTime;
@@ -67,19 +67,19 @@ public class EventRequest {
         this.eventColor = eventColor;
     }
 
-    public UserEventResponse getOrganizer() {
+    public Response getOrganizer() {
         return organizer;
     }
 
-    public void setOrganizer(final UserEventResponse organizer) {
+    public void setOrganizer(final Response organizer) {
         this.organizer = organizer;
     }
 
-    public List<UserEventResponse> getGuests() {
+    public List<Response> getGuests() {
         return guests;
     }
 
-    public void setGuests(final List<UserEventResponse> guests) {
+    public void setGuests(final List<Response> guests) {
         this.guests = guests;
     }
 }

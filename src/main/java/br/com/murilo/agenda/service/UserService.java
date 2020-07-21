@@ -45,6 +45,14 @@ public class UserService implements UserDetailsService {
         return applicationUserRepository.findByUsernameIn(usernames);
     }
 
+    public ApplicationUser findById(final String id) {
+        final Optional<ApplicationUser> optionalUser = this.applicationUserRepository.findById(id);
+        if(optionalUser.isPresent()) {
+            return optionalUser.get();
+        }
+        throw new RuntimeException("User not found!");
+    }
+
     public ApplicationUser createUser(final ApplicationUser user) {
             return applicationUserRepository.save(user);
     }
