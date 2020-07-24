@@ -31,26 +31,26 @@ public class EventService {
         throw new ResourceAlreadyExistsException(EVENT_ALREADY_EXIST);
     }
 
-    public Event updateEvent(final String id, final Event event) {
-        if(eventExist(id)) {
-            event.setId(id);
+    public Event updateEvent(final String eventID, final Event event) {
+        if(eventExist(eventID)) {
+            event.setId(eventID);
             return this.eventRepository.save(event);
         }
         throw new ResourceNotExistsException(EVENT_DOES_NOT_EXIST);
     }
 
-    public void deleteEvent(final String id, final Event event) {
-        if(eventExist(id)) {
+    public void deleteEvent(final String eventID, final Event event) {
+        if(eventExist(eventID)) {
             this.eventRepository.delete(event);
             return;
         }
         throw new ResourceNotExistsException(EVENT_DOES_NOT_EXIST);
     }
 
-    public List<Event> findEvents(final String id, final LocalDateTime initialDate, final LocalDateTime endDate) {
+    public List<Event> findEvents(final String userID, final LocalDateTime initialDate, final LocalDateTime endDate) {
         final Set<Event> events = new HashSet<>();
-        events.addAll(this.eventRepository.findByInitialDateTimeBetweenAndOrganizerUserId(initialDate, endDate, id));
-        events.addAll(this.eventRepository.findByInitialDateTimeBetweenAndGuestsUserId(initialDate, endDate, id));
+        events.addAll(this.eventRepository.findByInitialDateTimeBetweenAndOrganizerUserId(initialDate, endDate, userID));
+        events.addAll(this.eventRepository.findByInitialDateTimeBetweenAndGuestsUserId(initialDate, endDate, userID));
         return new ArrayList<>(events);
     }
 

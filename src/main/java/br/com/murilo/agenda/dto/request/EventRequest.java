@@ -16,6 +16,8 @@ public class EventRequest {
 
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime finalDateTime;
+    private String eventName;
+    private String eventDescription;
     private String eventColor;
     private Response organizer;
     private List<Response> guests;
@@ -23,12 +25,17 @@ public class EventRequest {
     public EventRequest(final String id,
                         final LocalDateTime initialDateTime,
                         final LocalDateTime finalDateTime,
+                        final String eventName,
+                        final String eventDescription,
                         final String eventColor,
                         final Response organizer,
                         final List<Response> guests) {
+
         this.id = id;
         this.initialDateTime = initialDateTime;
         this.finalDateTime = finalDateTime;
+        this.eventName = eventName;
+        this.eventDescription = eventDescription;
         this.eventColor = eventColor;
         this.organizer = organizer;
         this.guests = new ArrayList<>();
@@ -81,5 +88,21 @@ public class EventRequest {
 
     public void setGuests(final List<Response> guests) {
         this.guests = guests;
+    }
+
+    public String getEventName() {
+        return eventName;
+    }
+
+    public void setEventName(final String eventName) {
+        this.eventName = eventName;
+    }
+
+    public String getEventDescription() {
+        return eventDescription;
+    }
+
+    public void setEventDescription(final String eventDescription) {
+        this.eventDescription = eventDescription;
     }
 }

@@ -19,6 +19,8 @@ public class Event {
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime finalDateTime;
+    private String eventName;
+    private String eventDescription;
     private String eventColor;
     private EventUserResponse organizer;
     private List<EventUserResponse> guests;
@@ -26,12 +28,17 @@ public class Event {
     public Event(final String id,
                  final LocalDateTime initialDateTime,
                  final LocalDateTime finalDateTime,
+                 final String eventName,
+                 final String eventDescription,
                  final String eventColor,
                  final EventUserResponse organizer,
                  final List<EventUserResponse> guests) {
+
         this.id = id;
         this.initialDateTime = initialDateTime;
         this.finalDateTime = finalDateTime;
+        this.eventName = eventName;
+        this.eventDescription = eventDescription;
         this.eventColor = eventColor;
         this.organizer = organizer;
         this.guests = guests;
@@ -91,6 +98,22 @@ public class Event {
 
     public void setGuests(final List<EventUserResponse> guests) {
         this.guests = guests;
+    }
+
+    public String getEventName() {
+        return eventName;
+    }
+
+    public void setEventName(final String eventName) {
+        this.eventName = eventName;
+    }
+
+    public String getEventDescription() {
+        return eventDescription;
+    }
+
+    public void setEventDescription(final String eventDescription) {
+        this.eventDescription = eventDescription;
     }
 
     @Override

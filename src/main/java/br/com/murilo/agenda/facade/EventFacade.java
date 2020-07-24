@@ -37,20 +37,20 @@ public class EventFacade {
         return this.conversionService.convert(createdEvent, EventResponse.class);
     }
 
-    public EventResponse updateEvent(final String id, final EventRequest request) {
+    public EventResponse updateEvent(final String eventID, final EventRequest request) {
         final Event event = this.conversionService.convert(request, Event.class);
-        final Event updatedEvent = this.eventService.updateEvent(id, event);
+        final Event updatedEvent = this.eventService.updateEvent(eventID, event);
         return this.conversionService.convert(updatedEvent, EventResponse.class);
     }
 
     public List<EventResponse> findEvents(final String username, final LocalDateTime initialDate, final LocalDateTime endDate) {
-        final String id = this.userService.findByUsername(username).getId();
-        final List<Event> events = this.eventService.findEvents(id, initialDate, endDate);
+        final String userID = this.userService.findByUsername(username).getId();
+        final List<Event> events = this.eventService.findEvents(userID, initialDate, endDate);
         return events.stream().map(event -> this.conversionService.convert(event, EventResponse.class)).collect(Collectors.toList());
     }
 
-    public void deleteEvent(final String id, final EventRequest eventRequest) {
+    public void deleteEvent(final String eventID, final EventRequest eventRequest) {
         final Event event = this.conversionService.convert(eventRequest, Event.class);
-        this.eventService.deleteEvent(id, event);
+        this.eventService.deleteEvent(eventID, event);
     }
 }

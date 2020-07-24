@@ -22,13 +22,6 @@ public class EventController {
         this.eventFacade = eventFacade;
     }
 
-    /*@GetMapping
-    public List<EventResponse> findEventsBetweenDates(@RequestParam("initialDate") @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")LocalDateTime initialDate,
-                                                      @RequestParam("endDate") @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")LocalDateTime endDate){
-        String username = getUsername();
-        return eventFacade.findEventsBetweenDates(initialDate, endDate, username);
-    }*/
-
     @PostMapping
     public EventResponse createEvent(@RequestBody EventCreationRequest request) {
         request.setOrganizerEmail(getUsername());

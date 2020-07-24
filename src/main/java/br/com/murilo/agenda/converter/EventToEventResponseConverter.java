@@ -29,6 +29,8 @@ public class EventToEventResponseConverter implements Converter<Event, EventResp
         return new EventResponse(event.getId(),
                 event.getInitialDateTime(),
                 event.getFinalDateTime(),
+                event.getEventName(),
+                event.getEventDescription(),
                 event.getEventColor(),
                 getOrganizerResponse(event),
                 getGuestsResponse(event));

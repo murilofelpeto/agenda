@@ -30,6 +30,8 @@ public class EventRequestToEventConverter implements Converter<EventRequest, Eve
         return new Event(eventRequest.getId(),
                 eventRequest.getInitialDateTime(),
                 eventRequest.getFinalDateTime(),
+                eventRequest.getEventName(),
+                eventRequest.getEventDescription(),
                 eventRequest.getEventColor(),
                 organizer,
                 guests);

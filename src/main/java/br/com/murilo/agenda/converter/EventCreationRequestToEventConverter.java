@@ -31,12 +31,13 @@ public class EventCreationRequestToEventConverter implements Converter<EventCrea
 
         List<EventUserResponse> guests = users.stream().map(user -> new EventUserResponse(user, MAYBE)).collect(Collectors.toList());
 
-        final Event event = new Event(eventCreationRequest.getId(),
+        return new Event(eventCreationRequest.getId(),
                 eventCreationRequest.getInitialDateTime(),
                 eventCreationRequest.getFinalDateTime(),
+                eventCreationRequest.getEventName(),
+                eventCreationRequest.getEventDescription(),
                 eventCreationRequest.getEventColor(),
                 new EventUserResponse(organizer, YES),
                 guests);
-        return event;
     }
 }
