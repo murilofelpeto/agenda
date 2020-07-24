@@ -11,8 +11,9 @@ import java.util.List;
 public interface EventRepository extends MongoRepository<Event, String> {
 
     /*
-    {"organizer.user" : {"$ref":"users","$id":{"$oid":"5ef2a158fb581209128cbcce"}}}
+    {"guest.user" : {"$ref":"users","$id":{"$oid":"5ef2a158fb581209128cbcce"}}}
      */
     List<Event> findByInitialDateTimeBetweenAndOrganizerUserId(final LocalDateTime initialDate, final LocalDateTime endDate, final String id);
+    List<Event> findByInitialDateTimeBetweenAndGuestsUserId(final LocalDateTime initialDate, final LocalDateTime endDate, final String id);
 
 }

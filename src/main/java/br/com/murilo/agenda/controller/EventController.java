@@ -1,6 +1,7 @@
 package br.com.murilo.agenda.controller;
 
 import br.com.murilo.agenda.dto.request.EventCreationRequest;
+import br.com.murilo.agenda.dto.request.EventRequest;
 import br.com.murilo.agenda.dto.response.EventResponse;
 import br.com.murilo.agenda.facade.EventFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,18 @@ public class EventController {
                                           @RequestParam("endDate") @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")LocalDateTime endDate) {
         final String username = getUsername();
         return this.eventFacade.findEvents(username, initialDate, endDate);
+    }
+
+    @PutMapping("/{id}")
+    public EventResponse updateEvent(@PathVariable("id") String id,
+                                     @RequestBody EventRequest eventRequest) {
+        return this.eventFacade.updateEvent(id, eventRequest);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteEvent(@PathVariable("id") String id,
+                            @RequestBody EventRequest eventRequest) {
+        this.eventFacade.deleteEvent(id, eventRequest);
     }
 
     private String getUsername(){

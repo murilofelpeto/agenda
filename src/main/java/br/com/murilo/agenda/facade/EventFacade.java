@@ -48,4 +48,9 @@ public class EventFacade {
         final List<Event> events = this.eventService.findEvents(id, initialDate, endDate);
         return events.stream().map(event -> this.conversionService.convert(event, EventResponse.class)).collect(Collectors.toList());
     }
+
+    public void deleteEvent(final String id, final EventRequest eventRequest) {
+        final Event event = this.conversionService.convert(eventRequest, Event.class);
+        this.eventService.deleteEvent(id, event);
+    }
 }

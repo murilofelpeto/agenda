@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class EventService {
@@ -45,8 +48,11 @@ public class EventService {
         throw new RuntimeException(EVENT_DOES_NOT_EXIST);
     }
 
-    public List<Event> findEvents(String id, final LocalDateTime initialDate, final LocalDateTime endDate) {
-        return this.eventRepository.findByInitialDateTimeBetweenAndOrganizerUserId(initialDate, endDate, id);
+    public List<Event> findEvents(final String id, final LocalDateTime initialDate, final LocalDateTime endDate) {
+        final Set<Event> events = new HashSet<>();
+        events.addAll(this.eventRepository.findByInitialDateTimeBetweenAndOrganizerUserId(initialDate, endDate, id));
+        events.addAll(this.eventRepository.findByInitialDateTimeBetweenAndGuestsUserId(initialDate, endDate, id));
+        return events.stream().collect(Collectors.toList());
     }
 
     private Boolean eventExist(String id) {
