@@ -1,14 +1,14 @@
 package br.com.murilo.agenda.service;
 
 import br.com.murilo.agenda.entity.Event;
+import br.com.murilo.agenda.exception.ResourceAlreadyExistsException;
+import br.com.murilo.agenda.exception.ResourceNotExistsException;
 import br.com.murilo.agenda.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,8 +28,7 @@ public class EventService {
         if(event.getId() == null) {
            return this.eventRepository.insert(event);
         }
-        //TODO Criar exception
-        throw new RuntimeException(EVENT_ALREADY_EXIST);
+        throw new ResourceAlreadyExistsException(EVENT_ALREADY_EXIST);
     }
 
     public Event updateEvent(final String id, final Event event) {
@@ -37,7 +36,7 @@ public class EventService {
             event.setId(id);
             return this.eventRepository.save(event);
         }
-        throw new RuntimeException(EVENT_DOES_NOT_EXIST);
+        throw new ResourceNotExistsException(EVENT_DOES_NOT_EXIST);
     }
 
     public void deleteEvent(final String id, final Event event) {
@@ -45,14 +44,14 @@ public class EventService {
             this.eventRepository.delete(event);
             return;
         }
-        throw new RuntimeException(EVENT_DOES_NOT_EXIST);
+        throw new ResourceNotExistsException(EVENT_DOES_NOT_EXIST);
     }
 
     public List<Event> findEvents(final String id, final LocalDateTime initialDate, final LocalDateTime endDate) {
         final Set<Event> events = new HashSet<>();
         events.addAll(this.eventRepository.findByInitialDateTimeBetweenAndOrganizerUserId(initialDate, endDate, id));
         events.addAll(this.eventRepository.findByInitialDateTimeBetweenAndGuestsUserId(initialDate, endDate, id));
-        return events.stream().collect(Collectors.toList());
+        return new ArrayList<>(events);
     }
 
     private Boolean eventExist(String id) {
