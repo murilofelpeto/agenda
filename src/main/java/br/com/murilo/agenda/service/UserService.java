@@ -1,6 +1,7 @@
 package br.com.murilo.agenda.service;
 
 import br.com.murilo.agenda.entity.ApplicationUser;
+import br.com.murilo.agenda.exception.ResourceNotExistsException;
 import br.com.murilo.agenda.repository.ApplicationUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -17,6 +18,7 @@ import java.util.Optional;
 @Service
 public class UserService implements UserDetailsService {
 
+    private static final String USER_NOT_FOUND = "User not found!";
     private ApplicationUserRepository applicationUserRepository;
 
     public UserService(@Autowired ApplicationUserRepository applicationUserRepository) {
@@ -50,10 +52,22 @@ public class UserService implements UserDetailsService {
         if(optionalUser.isPresent()) {
             return optionalUser.get();
         }
-        throw new RuntimeException("User not found!");
+        throw new ResourceNotExistsException(USER_NOT_FOUND);
     }
 
     public ApplicationUser createUser(final ApplicationUser user) {
-            return applicationUserRepository.save(user);
+            return applicationUserRepository.insert(user);
+    }
+
+    public ApplicationUser update(final String id, final ApplicationUser user) {
+        if(userExists(id)) {
+            user.setId(id);
+            return this.applicationUserRepository.save(user);
+        }
+        throw new ResourceNotExistsException(USER_NOT_FOUND);
+    }
+
+    private Boolean userExists(final String id) {
+        return this.applicationUserRepository.findById(id).isPresent();
     }
 }

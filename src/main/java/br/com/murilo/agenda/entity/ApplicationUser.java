@@ -14,6 +14,7 @@ public class ApplicationUser {
     private String name;
     private String username;
     private String password;
+    private Picture profilePicture;
 
     public ApplicationUser(){}
 
@@ -47,6 +48,14 @@ public class ApplicationUser {
 
     public void setName(final String name) {
         this.name = name;
+    }
+
+    public Picture getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(final Picture profilePicture) {
+        this.profilePicture = profilePicture;
     }
 
     @Override
