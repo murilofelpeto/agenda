@@ -85,6 +85,10 @@ public class Event {
         this.organizer = organizer;
     }
 
+    public void setOrganizerResponse(final EventResponseEnum response) {
+        this.organizer.setResponse(response);
+    }
+
     public String getOrganizerEmail() {
         return this.organizer.getUsername();
     }
@@ -99,6 +103,11 @@ public class Event {
 
     public void setGuests(final List<EventUserResponse> guests) {
         this.guests = guests;
+    }
+
+    public void updateGuests(final EventUserResponse guest) {
+        this.guests.removeIf(g -> g.getUsername().equals(guest.getUsername()));
+        this.guests.add(guest);
     }
 
     public List<String> getGuestsEmails() {

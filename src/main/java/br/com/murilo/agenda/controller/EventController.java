@@ -2,6 +2,7 @@ package br.com.murilo.agenda.controller;
 
 import br.com.murilo.agenda.dto.request.EventCreationRequest;
 import br.com.murilo.agenda.dto.request.EventRequest;
+import br.com.murilo.agenda.dto.request.UpdateResponse;
 import br.com.murilo.agenda.dto.response.EventResponse;
 import br.com.murilo.agenda.facade.EventFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,13 +44,22 @@ public class EventController {
     @PutMapping("/{id}")
     public EventResponse updateEvent(@PathVariable("id") String id,
                                      @RequestBody EventRequest eventRequest) {
-        return this.eventFacade.updateEvent(id, eventRequest);
+        final String username = getUsername();
+        return this.eventFacade.updateEvent(id, eventRequest, username);
     }
 
     @DeleteMapping("/{id}")
     public void deleteEvent(@PathVariable("id") String id,
                             @RequestBody EventRequest eventRequest) {
-        this.eventFacade.deleteEvent(id, eventRequest);
+        final String username = getUsername();
+        this.eventFacade.deleteEvent(id, eventRequest, username);
+    }
+
+    @PatchMapping("/{id}/response")
+    public EventResponse updateResponse(@PathVariable("id") String id,
+                                        @RequestBody UpdateResponse updateResponse) {
+        final String username = getUsername();
+        return eventFacade.updateEventResponse(username, updateResponse, id);
     }
 
     private String getUsername(){

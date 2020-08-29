@@ -1,6 +1,9 @@
 package br.com.murilo.agenda.service;
 
+import br.com.murilo.agenda.dto.request.UpdateResponse;
+import br.com.murilo.agenda.dto.response.EventResponse;
 import br.com.murilo.agenda.entity.Event;
+import br.com.murilo.agenda.exception.EventNotModifiedException;
 import br.com.murilo.agenda.exception.ResourceAlreadyExistsException;
 import br.com.murilo.agenda.exception.ResourceNotExistsException;
 import br.com.murilo.agenda.repository.EventRepository;
@@ -10,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class EventService {
@@ -18,6 +20,7 @@ public class EventService {
     private final static String EVENT_DOES_NOT_EXIST = "Evento não existe!";
     private final static String EVENT_ALREADY_EXIST = "Evento já existe!";
     public static final String CREATED_EVENT_SUBJECT = "Voce foi convidado para o evento!";
+    private static final String USER_DOES_NOT_HAVE_PERMISSION = "O usuário não está participando deste evento";
 
     private final EventRepository eventRepository;
     private final EmailService emailService;
@@ -37,16 +40,16 @@ public class EventService {
         throw new ResourceAlreadyExistsException(EVENT_ALREADY_EXIST);
     }
 
-    public Event updateEvent(final String eventID, final Event event) {
-        if(eventExist(eventID)) {
+    public Event updateEvent(final String eventID, final Event event, final String userID) {
+        if(eventExist(eventID) && canModifyEvent(event, userID)) {
             event.setId(eventID);
             return this.eventRepository.save(event);
         }
         throw new ResourceNotExistsException(EVENT_DOES_NOT_EXIST);
     }
 
-    public void deleteEvent(final String eventID, final Event event) {
-        if(eventExist(eventID)) {
+    public void deleteEvent(final String eventID, final Event event, final String userID) {
+        if(eventExist(eventID) && canModifyEvent(event, userID)) {
             this.eventRepository.delete(event);
             return;
         }
@@ -60,15 +63,46 @@ public class EventService {
         return new ArrayList<>(events);
     }
 
-    private Boolean eventExist(String id) {
-        return this.eventRepository.findById(id).isPresent();
-    }
-
     public Event findEventById(final String id) {
-        var optionalEvent = this.eventRepository.findById(id);
+        final var optionalEvent = this.eventRepository.findById(id);
         if(optionalEvent.isPresent()){
             return optionalEvent.get();
         }
         throw new ResourceNotExistsException(EVENT_DOES_NOT_EXIST);
+    }
+
+    public Event updateEventResponse(final String username, final UpdateResponse updateResponse, final String id) {
+        final var optionalEvent = this.eventRepository.findById(id);
+        if(optionalEvent.isPresent()) {
+            final Event event = optionalEvent.get();
+
+            if(event.getOrganizerEmail().equals(username)) {
+                event.setOrganizerResponse(updateResponse.getResponse());
+                return this.eventRepository.save(event);
+            }
+
+            if(event.getGuestsEmails().contains(username)) {
+                final var optionalGuest = event.getGuests().stream().filter(guest -> guest.getUsername().equals(username)).findFirst();
+                if(optionalGuest.isPresent()) {
+                    final var guest = optionalGuest.get();
+                    guest.setResponse(updateResponse.getResponse());
+                    event.updateGuests(guest);
+                    return this.eventRepository.save(event);
+                }
+            }
+            throw new EventNotModifiedException(USER_DOES_NOT_HAVE_PERMISSION);
+        }
+        throw new ResourceNotExistsException(EVENT_DOES_NOT_EXIST);
+    }
+
+    private Boolean eventExist(String id) {
+        return this.eventRepository.findById(id).isPresent();
+    }
+
+    private Boolean canModifyEvent(final Event event, final String userID) {
+        if(event.getOrganizer().getUser().getId().equals(userID)) {
+            return true;
+        }
+        return false;
     }
 }
