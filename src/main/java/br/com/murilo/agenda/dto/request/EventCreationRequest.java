@@ -3,6 +3,8 @@ package br.com.murilo.agenda.dto.request;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,15 +12,22 @@ import java.util.List;
 public class EventCreationRequest {
 
     private String id;
+
+    @NotNull(message = "{event.initial.date.not.null}")
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime initialDateTime;
 
+    @NotNull(message = "{event.final.date.not.null}")
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime finalDateTime;
+
+    @NotNull(message = "{event.name.not.null}")
     private String eventName;
     private String eventDescription;
     private String eventColor;
     private String organizerEmail;
+
+    @NotEmpty(message = "{event.guests.not.empty}")
     private List<String> guestsEmail;
 
     public EventCreationRequest(){}

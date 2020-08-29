@@ -1,10 +1,20 @@
 package br.com.murilo.agenda.dto.request;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+
 public class UserRequest {
 
     private String id;
+
+    @NotNull(message = "{user.name.not.null}")
     private String name;
+
+    @NotNull(message = "{user.email.not.null}")
+    @Email(message = "{user.email.not.valid}")
     private String email;
+
+    @NotNull(message = "{user.password.not.null}")
     private String password;
 
     public UserRequest(final String id,

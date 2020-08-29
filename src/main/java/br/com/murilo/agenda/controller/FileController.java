@@ -1,6 +1,8 @@
 package br.com.murilo.agenda.controller;
 
 import br.com.murilo.agenda.service.UploadFilesService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.core.io.Resource;
 
 import javax.servlet.http.HttpServletRequest;
 
+@Api("Retrieve a file to download it")
 @RestController
 @RequestMapping("/file")
 public class FileController {
@@ -27,6 +30,7 @@ public class FileController {
         this.uploadFilesService = uploadFilesService;
     }
 
+    @ApiOperation("Retrive a single file that was uploaded")
     @GetMapping("/downloadFile/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable("fileName") String fileName, HttpServletRequest request) {
         Resource resource = uploadFilesService.getFile(fileName);

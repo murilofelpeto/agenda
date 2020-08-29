@@ -3,23 +3,34 @@ package br.com.murilo.agenda.dto.request;
 import br.com.murilo.agenda.dto.Response;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EventRequest {
 
+    @NotNull(message = "{event.id.not.null}")
     private String id;
 
+    @NotNull(message = "{event.initial.date.not.null}")
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime initialDateTime;
 
+    @NotNull(message = "{event.final.date.not.null}")
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime finalDateTime;
+
+    @NotNull(message = "{event.name.not.null}")
     private String eventName;
     private String eventDescription;
     private String eventColor;
+
+    @NotNull(message = "{event.organizer.not.null}")
     private Response organizer;
+
+    @NotEmpty(message = "{event.guests.not.empty}")
     private List<Response> guests;
 
     public EventRequest(final String id,
