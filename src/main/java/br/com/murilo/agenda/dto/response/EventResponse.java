@@ -9,18 +9,18 @@ import java.util.List;
 
 public class EventResponse {
 
-    private String id;
+    private final String id;
 
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private LocalDateTime initialDateTime;
+    private final LocalDateTime initialDateTime;
 
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private LocalDateTime finalDateTime;
-    private String eventName;
-    private String eventDescription;
-    private String eventColor;
-    private Response organizer;
-    private List<Response> guests;
+    private final LocalDateTime finalDateTime;
+    private final String eventName;
+    private final String eventDescription;
+    private final String eventColor;
+    private final Response organizer;
+    private final List<Response> guests;
 
     public EventResponse(final String id,
                          final LocalDateTime initialDateTime,

@@ -39,7 +39,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addFormatters(final FormatterRegistry registry) {
         registry.addConverter(new EventCreationRequestToEventConverter(userService));
         registry.addConverter(new EventRequestToEventConverter(conversionService));
-        registry.addConverter(new EventToEventResponseConverter(userService));
+        registry.addConverter(new EventToEventResponseConverter());
         registry.addConverter(new MultiPartToPictureConverter(uploadFilesService));
         registry.addConverter(new PictureToPictureResponseConverter());
         registry.addConverter(new UserEventResponseToEventUserResponseConverter(userService));

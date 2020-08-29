@@ -19,7 +19,7 @@ import java.util.Optional;
 public class UserService implements UserDetailsService {
 
     private static final String USER_NOT_FOUND = "User not found!";
-    private ApplicationUserRepository applicationUserRepository;
+    private final ApplicationUserRepository applicationUserRepository;
 
     public UserService(@Autowired ApplicationUserRepository applicationUserRepository) {
         this.applicationUserRepository = applicationUserRepository;

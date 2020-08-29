@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.util.Objects;
+
 @Service
 public class MultiPartToPictureConverter implements Converter<MultipartFile, Picture> {
 
@@ -23,7 +25,7 @@ public class MultiPartToPictureConverter implements Converter<MultipartFile, Pic
 
     @Override
     public Picture convert(final MultipartFile picture) {
-        if(isAcceptedType(picture.getContentType()) && hasCorrectedSize(picture.getSize())) {
+        if(isAcceptedType(Objects.requireNonNull(picture.getContentType())) && hasCorrectedSize(picture.getSize())) {
             String fileName = uploadFilesService.save(picture);
             String fileDownloadURI = ServletUriComponentsBuilder.fromCurrentContextPath().path("/file/downloadFile/").path(fileName).toUriString();
             String fileType = picture.getContentType();
@@ -34,18 +36,12 @@ public class MultiPartToPictureConverter implements Converter<MultipartFile, Pic
     }
 
     private boolean hasCorrectedSize(final Long size) {
-        if(size > 0 && size <= MAX_KB) {
-            return true;
-        }
-        return false;
+        return size > 0 && size <= MAX_KB;
     }
 
     private boolean isAcceptedType(final String contentType) {
-        if(contentType.equals("image/jpg") ||
-           contentType.equals("image/png") ||
-           contentType.equals("image/jpeg")) {
-            return true;
-        }
-        return false;
+        return contentType.equals("image/jpg") ||
+                contentType.equals("image/png") ||
+                contentType.equals("image/jpeg");
     }
 }

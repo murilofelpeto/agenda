@@ -4,7 +4,7 @@ import br.com.murilo.agenda.types.EventResponseEnum;
 
 public class UpdateResponse {
 
-    private EventResponseEnum response;
+    private final EventResponseEnum response;
 
     public UpdateResponse(final EventResponseEnum response) {
         this.response = response;

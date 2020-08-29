@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
@@ -34,7 +35,7 @@ public class EventFacade {
 
     public EventResponse createEvent(final EventCreationRequest request) {
         final Event event = this.conversionService.convert(request, Event.class);
-        final Event createdEvent = this.eventService.createEvent(event);
+        final Event createdEvent = this.eventService.createEvent(Objects.requireNonNull(event));
         return this.conversionService.convert(createdEvent, EventResponse.class);
     }
 

@@ -1,7 +1,6 @@
 package br.com.murilo.agenda.service;
 
 import br.com.murilo.agenda.dto.request.UpdateResponse;
-import br.com.murilo.agenda.dto.response.EventResponse;
 import br.com.murilo.agenda.entity.Event;
 import br.com.murilo.agenda.exception.EventNotModifiedException;
 import br.com.murilo.agenda.exception.ResourceAlreadyExistsException;
@@ -100,9 +99,6 @@ public class EventService {
     }
 
     private Boolean canModifyEvent(final Event event, final String userID) {
-        if(event.getOrganizer().getUser().getId().equals(userID)) {
-            return true;
-        }
-        return false;
+        return event.getOrganizer().getUser().getId().equals(userID);
     }
 }

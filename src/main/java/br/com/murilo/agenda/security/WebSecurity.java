@@ -19,8 +19,8 @@ import static br.com.murilo.agenda.types.SecurityEnums.REGISTER_URI;
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter {
 
-    private UserService userService;
-    private BCryptPasswordEncoder bcryptPassword;
+    private final UserService userService;
+    private final BCryptPasswordEncoder bcryptPassword;
 
     public WebSecurity(@Autowired UserService userService,
                        @Autowired BCryptPasswordEncoder bcryptPassword) {

@@ -1,6 +1,5 @@
 package br.com.murilo.agenda.types;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashMap;
@@ -16,8 +15,8 @@ public enum EventResponseEnum {
     NO("No"),
     MAYBE("Maybe");
 
-    private String response;
-    private static Map<String, EventResponseEnum> byResponse = new HashMap<>();
+    private final String response;
+    private static final Map<String, EventResponseEnum> byResponse = new HashMap<>();
 
     EventResponseEnum(final String response) {
         this.response = response;

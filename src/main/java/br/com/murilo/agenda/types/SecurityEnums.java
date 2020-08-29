@@ -14,8 +14,8 @@ public enum SecurityEnums {
     HEADER("Authorization"),
     REGISTER_URI("/auth/register");
 
-    private String securityValue;
-    private static Map<String, SecurityEnums> bySecurity = new HashMap<>();
+    private final String securityValue;
+    private static final Map<String, SecurityEnums> bySecurity = new HashMap<>();
 
     SecurityEnums(final String securityValue) {
         this.securityValue = securityValue;

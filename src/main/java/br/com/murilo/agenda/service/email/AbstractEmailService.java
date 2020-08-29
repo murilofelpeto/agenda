@@ -1,6 +1,7 @@
 package br.com.murilo.agenda.service.email;
 
 import br.com.murilo.agenda.entity.Event;
+import br.com.murilo.agenda.exception.EmailNotSendException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -15,6 +16,7 @@ import java.util.Date;
 
 public abstract class AbstractEmailService implements EmailService {
 
+    private static final String ERRO_SEND_EMAIL = "Erro ao enviar o email";
     @Autowired
     private JavaMailSender mailSender;
 
@@ -30,7 +32,7 @@ public abstract class AbstractEmailService implements EmailService {
         try {
             sendHtmlEmail(prepareMessage(event, subject));
         }catch (MessagingException ex) {
-
+            throw new EmailNotSendException(ERRO_SEND_EMAIL);
         }
     }
 

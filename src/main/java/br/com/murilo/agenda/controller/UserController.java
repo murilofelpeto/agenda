@@ -2,7 +2,6 @@ package br.com.murilo.agenda.controller;
 
 import br.com.murilo.agenda.dto.response.UserResponse;
 import br.com.murilo.agenda.facade.UserFacade;
-import br.com.murilo.agenda.service.UploadFilesService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +28,7 @@ public class UserController {
     @PostMapping("/profilePicture")
     public UserResponse insertProfilePicture(@RequestParam("picture") MultipartFile picture) {
         final String username = getUsername();
-        UserResponse user = userFacade.uploadImage(username, picture);
-        return user;
+        return userFacade.uploadImage(username, picture);
     }
 
     private String getUsername(){

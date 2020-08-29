@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -22,8 +21,8 @@ import javax.validation.Valid;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private UserFacade userFacade;
-    private BCryptPasswordEncoder encoder;
+    private final UserFacade userFacade;
+    private final BCryptPasswordEncoder encoder;
 
     public AuthController(@Autowired UserFacade userFacade,
                           @Autowired BCryptPasswordEncoder encoder) {

@@ -49,6 +49,12 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler(EmailNotSendException.class)
+    public final ResponseEntity<ExceptionResponse> handleEmailNotSendException(Exception ex, WebRequest request) {
+        ExceptionResponse response = new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(final MethodArgumentNotValidException ex,
                                                                   final HttpHeaders headers,
@@ -58,9 +64,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         List<ViolationErrorResponse> violations = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .map(fieldError -> {
-                    return new ViolationErrorResponse(fieldError.getField(), fieldError.getDefaultMessage());
-                })
+                .map(fieldError -> new ViolationErrorResponse(fieldError.getField(), fieldError.getDefaultMessage()))
                 .collect(Collectors.toList());
 
 

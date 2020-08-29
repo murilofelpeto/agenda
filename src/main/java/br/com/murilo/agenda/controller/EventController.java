@@ -23,14 +23,10 @@ import java.util.List;
 @RequestMapping("/event")
 public class EventController {
 
-    //TODO Add bean validation
-    //TODO Add internationalization of errors
-    //TODO Add profiles configuration and add local-profile to gitignore
-    //TODO Hide configurations
     //TODO Create unit tests
     //TODO Send to heroku using travis-CI
 
-    private EventFacade eventFacade;
+    private final EventFacade eventFacade;
 
     public EventController(@Autowired EventFacade eventFacade) {
         this.eventFacade = eventFacade;

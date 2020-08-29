@@ -2,8 +2,8 @@ package br.com.murilo.agenda.exception;
 
 public class ViolationErrorResponse {
 
-    private String fieldName;
-    private String message;
+    private final String fieldName;
+    private final String message;
 
     public ViolationErrorResponse(final String fieldName, final String message) {
         this.fieldName = fieldName;

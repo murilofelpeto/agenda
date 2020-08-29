@@ -1,7 +1,6 @@
 package br.com.murilo.agenda.security;
 
 import br.com.murilo.agenda.entity.ApplicationUser;
-import br.com.murilo.agenda.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,7 +33,7 @@ import com.auth0.jwt.JWT;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private AuthenticationManager authManager;
+    private final AuthenticationManager authManager;
     public JWTAuthenticationFilter(@Autowired AuthenticationManager authManager) {
         this.authManager = authManager;
     }
@@ -60,7 +59,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(final HttpServletRequest request,
                                             final HttpServletResponse response,
                                             final FilterChain chain,
-                                            final Authentication authResult) throws IOException, ServletException {
+                                            final Authentication authResult) {
 
         Date now = new Date();
         Date expiration = new Date(now.getTime() + Integer.parseInt(EXPIRATION_TIME.getSecurityValue()));
