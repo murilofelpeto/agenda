@@ -19,6 +19,10 @@ public class EventUserResponse {
         return user;
     }
 
+    public String getUsername() {
+        return this.user.getUsername();
+    }
+
     public void setUser(final ApplicationUser user) {
         this.user = user;
     }

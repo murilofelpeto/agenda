@@ -53,4 +53,9 @@ public class EventFacade {
         final Event event = this.conversionService.convert(eventRequest, Event.class);
         this.eventService.deleteEvent(eventID, event);
     }
+
+    public EventResponse findEventById(final String id) {
+        final Event event = this.eventService.findEventById(id);
+        return this.conversionService.convert(event, EventResponse.class);
+    }
 }

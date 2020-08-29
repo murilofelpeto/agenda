@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title th:remove="all">Convite para um evento importante!</title>
+</head>
+<body>
+<div>
+    <h3>Você foi convidado para o evento: <span th:text="${event.eventName}" /></h3>
+    <br />
+    <p>
+        <span th:text="${organizer}" /> te convidou para o evento!
+    </p>
+    <br />
+    <p>
+        Clique no link abaixo para visualizar o evento! <br /> <span
+            th:text="${eventUrl}"></span>
+    </p>
+</div>
+</body>
+</html>

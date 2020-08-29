@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Document(collection = "event")
 public class Event {
@@ -85,7 +86,7 @@ public class Event {
     }
 
     public String getOrganizerEmail() {
-        return this.organizer.getUser().getUsername();
+        return this.organizer.getUsername();
     }
 
     public EventResponseEnum getOrganizerResponse() {
@@ -98,6 +99,10 @@ public class Event {
 
     public void setGuests(final List<EventUserResponse> guests) {
         this.guests = guests;
+    }
+
+    public List<String> getGuestsEmails() {
+        return this.guests.stream().map(EventUserResponse::getUsername).collect(Collectors.toList());
     }
 
     public String getEventName() {

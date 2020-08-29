@@ -35,6 +35,11 @@ public class EventController {
         return this.eventFacade.findEvents(username, initialDate, endDate);
     }
 
+    @GetMapping("/{id}")
+    public EventResponse getEventById(@PathVariable("id") final String id) {
+        return this.eventFacade.findEventById(id);
+    }
+
     @PutMapping("/{id}")
     public EventResponse updateEvent(@PathVariable("id") String id,
                                      @RequestBody EventRequest eventRequest) {
